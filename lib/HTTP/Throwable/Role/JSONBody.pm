@@ -1,4 +1,5 @@
 package HTTP::Throwable::Role::JSONBody;
+# ABSTRACT - JSON Body
 
 use Moo::Role;
 use JSON::MaybeXS;
@@ -29,4 +30,13 @@ sub as_string {
   return $self->body;
 }
 
-1;
+no Moo::Role; 1;
+__END__
+
+=head1 OVERVIEW
+
+This role does two things - accepts a C<payload> argument that should be
+anything you can pass to L<JSON/"encode_json">, and then encodes it as the
+body, specifying a C<Content-Type> of C<application/json>.
+
+=cut

@@ -2,6 +2,8 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+        - payload is optional, {} will be used as the body in its absence
+
 0.001     2016-09-21 08:32:36-04:00 America/New_York
 
         - First release, maybe

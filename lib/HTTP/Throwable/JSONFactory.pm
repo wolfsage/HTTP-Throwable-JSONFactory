@@ -1,4 +1,5 @@
 package HTTP::Throwable::JSONFactory;
+# ABSTRACT: Throw exceptions with JSON bodies
 
 use strict;
 use warnings;

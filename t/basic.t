@@ -4,21 +4,35 @@ use warnings;
 use Test::More;
 
 use JSON;
+use Try::Tiny;
 
-use HTTP::Throwable::JSONFactory qw(http_exception);
+use HTTP::Throwable::JSONFactory qw(http_throw);
 
-is(
-  http_exception(Gone => {
-    json => {
-      what => 'for',
-    },
-  }),
-  <<EOF,
-410 Gone
+{
+  my $exception;
 
-{"what":"for"}
-EOF
-  "seems to work"
-);
+  try {
+    http_throw(Gone => {
+      payload => {
+        what => 'for',
+      },
+    });
+  }  catch {
+    $exception = $_;
+  };
+
+  is_deeply(
+    $exception->as_psgi,
+    [
+      410,
+      [
+        'Content-Type'   => 'application/json',
+        'Content-Length' => '14',
+      ],
+      [ '{"what":"for"}' ],
+    ],
+    "Excpetion looks right"
+  ) or diag explain $exception->as_psgi;
+}
 
 done_testing;

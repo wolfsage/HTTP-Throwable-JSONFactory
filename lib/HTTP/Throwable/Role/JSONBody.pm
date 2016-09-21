@@ -3,7 +3,7 @@ package HTTP::Throwable::Role::JSONBody;
 use Moo::Role;
 use JSON::MaybeXS;
 
-has json => (
+has payload => (
   is => 'ro',
   required => 1,
 );
@@ -11,14 +11,14 @@ has json => (
 sub body {
   my $self = shift;
 
-  return encode_json($self->json);
+  return encode_json($self->payload);
 }
 
 sub body_headers {
   my ($self, $body) = @_;
 
   return [
-    'Content-Type' => 'text/plain',
+    'Content-Type' => 'application/json',
     'Content-Length' => length $body,
   ];
 }
@@ -26,10 +26,7 @@ sub body_headers {
 sub as_string {
   my $self = shift;
 
-  return   $self->status_line
-         . "\n\n"
-         . $self->body
-         . "\n";
+  return $self->body;
 }
 
 1;
